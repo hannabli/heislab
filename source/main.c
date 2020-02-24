@@ -17,11 +17,13 @@ int main(){
 
     startElev();
 
+    addOrder(2, HARDWARE_ORDER_DOWN);
+    nextOrder(3);
 
 
-    while(1) {
+   /*while(1) {
         stateMachine();
-    }
+    }*/
 
     return 0;
 }

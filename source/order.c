@@ -159,7 +159,7 @@ int checkIfOrdersAboveSameDir(int floor) {
             }
  
             }
-            hardware_command_floor_indicator_on(whichFloor());
+      
         }
      }
      return 0;
@@ -167,7 +167,7 @@ int checkIfOrdersAboveSameDir(int floor) {
 
 
 
-
+//HER ER DET EN BUG MED CAB ORDERS
 int checkIfOrdersAboveOppDir(int floor) {
 
     for(int i = (floor+1); i<4; i++) {
@@ -177,28 +177,31 @@ int checkIfOrdersAboveOppDir(int floor) {
             setDirection(UP);
 
     while(getState()==MOVING) {
-            getOrder();
-            if(checkStopButton()){
-                    stateMachine();
-                }
-            setPassingFloor();
-            hardware_command_floor_indicator_on(current_floor);
-            if(ordersDown[whichFloor()] || ordersUp[whichFloor()]) {
-                setTimerBefore();
-                setState(STOPPED_ON_FLOOR);
-                checkIfOrderFinished();
-                hardware_command_floor_indicator_on(whichFloor());
-                while(!checkTimer()) {
-                    hardware_command_movement(HARDWARE_MOVEMENT_STOP);
-                    openDoor(); 
+        setPassingFloor();  
+        getOrder();
+        if(checkStopButton()){
+            stateMachine();
+        }
             
- }
- return 1;
- }
- }
-    hardware_command_floor_indicator_on(current_floor);
- }
- }
+        hardware_command_floor_indicator_on(current_floor);
+        if(ordersDown[whichFloor()] || ordersUp[whichFloor()]) {
+
+            setTimerBefore();
+            setState(STOPPED_ON_FLOOR);
+            checkIfOrderFinished();
+            hardware_command_floor_indicator_on(whichFloor());
+            while(!checkTimer()) {
+                hardware_command_movement(HARDWARE_MOVEMENT_STOP);
+                openDoor(); 
+            
+            }
+            return 1;
+            }
+                
+        }
+    }
+ 
+    }
  return 0;
 }
 
@@ -219,8 +222,8 @@ int checkIfOrdersBelowSameDir(int floor) {
         setPassingFloor();
         getOrder();
         if(checkStopButton()){
-                    stateMachine();
-                }
+            stateMachine();
+        }
         hardware_command_floor_indicator_on(current_floor);
             if(ordersDown[whichFloor()] || cabOrders[whichFloor()]) {
             setTimerBefore();
@@ -239,7 +242,7 @@ int checkIfOrdersBelowSameDir(int floor) {
  }
  
  }
- hardware_command_floor_indicator_on(current_floor);
+
  }
  
  }
@@ -263,7 +266,7 @@ int checkIfOrdersBelowOppDir(int floor) {
                     stateMachine();
                 }
             hardware_command_floor_indicator_on(current_floor);
-                if(ordersUp[whichFloor()] || cabOrders[whichFloor()]) {
+                if(ordersUp[whichFloor()] || cabOrders[whichFloor()] || ordersDown[whichFloor()]) {
                     setTimerBefore();
                     setState(STOPPED_ON_FLOOR);
                     checkIfOrderFinished();
@@ -279,7 +282,7 @@ int checkIfOrdersBelowOppDir(int floor) {
         return 1;
         }
     }
- hardware_command_floor_indicator_on(current_floor);
+
  }
  }
  
