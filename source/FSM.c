@@ -86,7 +86,7 @@ int start_elev() {
 
     hardware_command_movement(HARDWARE_MOVEMENT_STOP);
     set_state(STOPPED_ON_FLOOR);
-    set_current_floor(whichFloor());
+    set_current_floor(which_floor());
     set_direction(NO_DIR);
  
 
@@ -106,8 +106,8 @@ int check_stop_button() {
         hardware_command_stop_light(1);
         if(is_on_floor()) {
             set_state(STOPPED_ON_FLOOR);
-            set_current_floor(whichFloor());
-            hardware_command_floor_indicator_on(whichFloor());
+            set_current_floor(which_floor());
+            hardware_command_floor_indicator_on(which_floor());
             hardware_command_door_open(1);
             }
         else{
@@ -168,11 +168,11 @@ void state_machine() {
 
     {
     case STOPPED_ON_FLOOR:
-        hardware_command_floor_indicator_on(whichFloor());
+        hardware_command_floor_indicator_on(which_floor());
         while(!hardware_read_stop_signal()) {
             
             get_order();
-            next_order(whichFloor());
+            next_order(which_floor());
             check_stop_button();
         }
         }
