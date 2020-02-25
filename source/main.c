@@ -17,7 +17,7 @@ int main(){
 
     startElev();
 
-
+    printf("Hei! Git test");
 
    while(1) {
         stateMachine();
