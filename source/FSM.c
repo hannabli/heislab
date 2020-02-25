@@ -8,15 +8,15 @@ current_direction prev_dir = UP;
 int prev_floor;
 
 
-int getCurrentFloor() {
+int get_current_floor() {
     return current_floor;
 }
 
-void setCurrentFloor(int floor) {
+void set_current_floor(int floor) {
     current_floor = floor;
 }
 
-void setPassingFloor() {
+void set_passing_floor() {
     for(int i=0; i<4; i++) {
         if(hardware_read_floor_sensor(i)) {
             current_floor=i;
@@ -24,23 +24,23 @@ void setPassingFloor() {
     }
 }
 
-state getState() {
+state get_state() {
     return elev_state;
 }
 
-void setState(state st) {
+void set_state(state st) {
     elev_state = st;
 }
 
-current_direction getDirection() {
+current_direction get_direction() {
     return elev_direction;
 }
 
-void setDirection(current_direction dir){
+void set_direction(current_direction dir){
     elev_direction=dir; 
 }
 
-bool isOnFloor() {
+bool is_on_floor() {
 
     for(int i=0; i<4; i++) {
 
@@ -56,7 +56,7 @@ bool isOnFloor() {
 
 }
 
-int whichFloor(){
+int which_floor(){
     for(int i=0; i<4; i++) {
 
     if(hardware_read_floor_sensor(i)) {
@@ -70,71 +70,71 @@ int whichFloor(){
 }
 
 
-int startElev() {
-    deleteAllOrders();
+int start_elev() {
+    delete_all_orders();
     hardware_command_door_open(0);
     hardware_command_stop_light(0);
-    int readyToOrder = 0;
+    int ready_to_order = 0;
 
-    while (!isOnFloor()) {
+    while (!is_on_floor()) {
 
         hardware_command_movement(HARDWARE_MOVEMENT_DOWN);
-        setDirection(DOWN);
-        setState(MOVING);
+        set_direction(DOWN);
+        set_state(MOVING);
 
     }
 
     hardware_command_movement(HARDWARE_MOVEMENT_STOP);
-    setState(STOPPED_ON_FLOOR);
-    setCurrentFloor(whichFloor()); 
-    setDirection(NO_DIR);
+    set_state(STOPPED_ON_FLOOR);
+    set_current_floor(whichFloor());
+    set_direction(NO_DIR);
  
 
-    return readyToOrder = 1;
+    return ready_to_order = 1;
 
 }
 
-int checkStopButton() {
+int check_stop_button() {
     int pushed = 0;
-    int hasStopped = 0;
+    int has_stopped = 0;
     while(hardware_read_stop_signal()) {
         pushed = 1;
-        hasStopped = 1;
+        has_stopped = 1;
         hardware_command_movement(HARDWARE_MOVEMENT_STOP);
-        deleteAllOrders();
+        delete_all_orders();
         
         hardware_command_stop_light(1);
-        if(isOnFloor()) {
-            setState(STOPPED_ON_FLOOR);
-            setCurrentFloor(whichFloor());
+        if(is_on_floor()) {
+            set_state(STOPPED_ON_FLOOR);
+            set_current_floor(whichFloor());
             hardware_command_floor_indicator_on(whichFloor());
             hardware_command_door_open(1);
             }
         else{
-            setState(STOPPED_BETWEEN_FLOORS); 
+            set_state(STOPPED_BETWEEN_FLOORS);
         }
     }
     hardware_command_stop_light(0);
-    if(pushed && isOnFloor()) {
-        openDoor();
+    if(pushed && is_on_floor()) {
+        open_door();
         pushed = 0;
     }
-    return hasStopped;
+    return has_stopped;
 }
 
 
 
 
-int openDoor() {
+int open_door() {
     int opened = 1;
     while(hardware_read_obstruction_signal()) {
         hardware_command_door_open(1);
         }
         if(!hardware_read_obstruction_signal()) {
-            setTimerBefore();
-            while(!checkTimer()) {
+            set_timer_before();
+            while(!check_timer()) {
                 if(hardware_read_obstruction_signal()) {
-            openDoor();
+            open_door();
         }
         hardware_command_door_open(1);
         opened = 1;
@@ -149,15 +149,15 @@ int openDoor() {
 
 
 
-void stateMachine() {
-    switch (getState())
+void state_machine() {
+    switch (get_state())
     {
     {
     case MOVING:
         while(1) {
-            getOrder();
+            get_order();
             
-            nextOrder(current_floor); 
+            next_order(current_floor);
         
         
             
@@ -171,75 +171,75 @@ void stateMachine() {
         hardware_command_floor_indicator_on(whichFloor());
         while(!hardware_read_stop_signal()) {
             
-            getOrder();
-            nextOrder(whichFloor());
-            checkStopButton();
+            get_order();
+            next_order(whichFloor());
+            check_stop_button();
         }
         }
         {
 
 
     case STOPPED_BETWEEN_FLOORS:
-        prev_dir=getDirection();
-        setDirection(NO_DIR);
+        prev_dir=get_direction();
+        set_direction(NO_DIR);
         prev_floor=current_floor;
 
      
         while(!hardware_read_stop_signal()) {
         
-            while(!orderExists()) {
-                getOrder();
+            while(!order_exists()) {
+                get_order();
             }
 
             //Sjekker om det kommer bestilling til etasjen heisen har nyligst passert
             if(prev_dir==UP) {
-                if(orderExistsOnFloor(prev_floor)) {
+                if(order_exists_on_floor(prev_floor)) {
                     while(!hardware_read_floor_sensor(prev_floor)) {
                         hardware_command_movement(HARDWARE_MOVEMENT_DOWN);
-                        setDirection(DOWN);
-                        if(checkStopButton()) {
-                            stateMachine();
+                        set_direction(DOWN);
+                        if(check_stop_button()) {
+                            state_machine();
                         }
                     }
-                    setTimerBefore();
+                    set_timer_before();
                     
-                    while(!checkTimer()) {
+                    while(!check_timer()) {
                         hardware_command_movement(HARDWARE_MOVEMENT_STOP);
-                        checkIfOrderFinished();
-                        checkStopButton();
+                        check_if_order_finished();
+                        check_stop_button();
                         
                     }
            
-                    setState(STOPPED_ON_FLOOR);
+                    set_state(STOPPED_ON_FLOOR);
                 }
             }
 
 
             if(prev_dir==DOWN) {
-                if(orderExistsOnFloor(prev_floor)) {
+                if(order_exists_on_floor(prev_floor)) {
                     while(!hardware_read_floor_sensor(prev_floor)) {
                         hardware_command_movement(HARDWARE_MOVEMENT_UP);
-                        setDirection(UP);
-                        if(checkStopButton()) {
-                            stateMachine();
+                        set_direction(UP);
+                        if(check_stop_button()) {
+                            state_machine();
                         }
                     }
                 
-                    setTimerBefore();
+                    set_timer_before();
                     
-                    while(!checkTimer()) {
+                    while(!check_timer()) {
                         hardware_command_movement(HARDWARE_MOVEMENT_STOP);
-                        checkIfOrderFinished();
-                        checkStopButton();
+                        check_if_order_finished();
+                        check_stop_button();
                         
                     }
-                    setState(STOPPED_ON_FLOOR);
+                    set_state(STOPPED_ON_FLOOR);
                 }
             }
 
 
 
-           nextOrder(current_floor);
+           next_order(current_floor);
         
             }
 

@@ -4,27 +4,25 @@
 
 time_t before;
 
-void setTimerBefore(){
+void set_timer_before(){
  before = time(NULL);
 }
 
-time_t getTimerBefore(){
+time_t get_timer_before(){
  return before;
 }
 
-bool checkTimer(){
-getOrder();
- int sec = 3;
- time_t now_t = time(NULL);
- int difference = now_t - getTimerBefore();
- if (difference >= sec){
- return 1;
- }
- else{
- return 0;
- }
- 
-
+bool check_timer(){
+    get_order();
+    int sec = 3;
+    time_t now_t = time(NULL);
+    int difference = now_t - get_timer_before();
+    if (difference >= sec){
+    return 1;
+    }
+    else{
+    return 0;
+    }
 }
 
 

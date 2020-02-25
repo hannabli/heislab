@@ -17,7 +17,7 @@
  *
  */
 
-void setTimerBefore();
+void set_timer_before();
 
 /**
  * @brief Gets the present time.
@@ -26,7 +26,7 @@ void setTimerBefore();
  * @return the present time as a clock_t variable.
  */
 
-clock_t getTimerBefore();
+clock_t get_timer_before();
 
 /**
  * @brief Checks if 3 seconds have passed since the timer was set.
@@ -35,5 +35,5 @@ clock_t getTimerBefore();
  * @return 1 if 3 seconds have passed, otherwise 0.
  */
 
-bool checkTimer();
+bool check_timer();
 

@@ -15,12 +15,12 @@ int main(){
 
 
 
-    startElev();
+    start_elev();
 
     printf("Hei! Git test");
 
    while(1) {
-        stateMachine();
+        state_machine();
     }
 
     return 0;

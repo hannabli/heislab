@@ -11,32 +11,32 @@
 #include "hardware.h"
 #include "FSM.h"
 
-void printArrayDown();
-void printArrayUp();
-void printArrayInside();
-int orderExists(); 
-int checkIfOrdersBetween(int floor, int endFloor);
-int orderExistsOnFloor(int floor);
+void print_array_down();
+void print_array_up();
+void print_array_inside();
+int order_exists();
+int check_if_orders_between(int floor, int endFloor);
+int order_exists_on_floor(int floor);
 /**
- * @brief Variable type int used in @c addOrder and @c deleteOrder.
+ * @brief Variable type int used in @c add_order and @c delete_order.
  */
 
 int current_floor;
 
-int checkIfOrdersAboveSameDir(int floor);
+int check_if_orders_above_same_dir(int floor);
 
 
-int checkIfOrdersAboveOppDir(int floor);
+int check_if_orders_above_opp_dir(int floor);
 
-int checkIfOrdersBelowSameDir(int floor);
+int check_if_orders_below_same_dir(int floor);
 
-int checkIfOrdersBelowOppDir(int floor);
+int check_if_orders_below_opp_dir(int floor);
 /**
  * @brief Checks if there is an order of a certain order type to a certain floor.
  *
- * Calls @c addOrder when there is a match.
+ * Calls @c add_order when there is a match.
  */
-void getOrder();
+void get_order();
 
 
 
@@ -49,17 +49,17 @@ void getOrder();
  * @param order_type The type of order that is made.
  */
 
-void addOrder(int floor, HardwareOrder order_type);
+void add_order(int floor, HardwareOrder order_type);
 
 
 /**
  * @brief Checks if an order is finished.
  *
- * Calls @c deleteOrder if order is finished.
+ * Calls @c delete_order if order is finished.
  */
 
 
-void checkIfOrderFinished();
+void check_if_order_finished();
 
 /**
  * @brief Deletes an order from the corresponding array.
@@ -71,14 +71,14 @@ void checkIfOrderFinished();
 
 
 
-void deleteOrder();
+void delete_order();
 
 /**
  * @brief Deletes all orders.
  * 
  */
 
-void deleteAllOrders();
+void delete_all_orders();
 
 
 
@@ -106,14 +106,14 @@ void deleteAllOrders();
 
 
 /**
- * @brief Calls @c checkIfOrdersUp or @c checkIfOrdersDown, depending on which direction the elevator is moving. 
+ * @brief Calls @c check_if_orders_up or @c check_if_orders_down, depending on which direction the elevator is moving.
  *
  * @param floor The floor at which the elevator is located.
  * 
  *
  */
 
-void nextOrder(int floor); 
+void next_order(int floor);
 
 #endif
  

@@ -40,13 +40,13 @@ typedef enum current_direction {
 
  } current_direction; 
 
-int getCurrentFloor();
-void setCurrentFloor(int floor);
+int get_current_floor();
+void set_current_floor(int floor);
 
-void setPassingFloor();
+void set_passing_floor();
 
-state getState();
-void setState(state st);
+state get_state();
+void set_state(state st);
 
  /**
  * @brief The current direction of the elevator.
@@ -59,9 +59,9 @@ void setState(state st);
  * @return Returns the variable @c elev_direction.
  */
 
-current_direction getDirection();
+current_direction get_direction();
 
-void setDirection(current_direction dir);
+void set_direction(current_direction dir);
 
 /**
  * @brief Checks if the elevator is on a floor.
@@ -70,7 +70,7 @@ void setDirection(current_direction dir);
  */
 
 
-bool isOnFloor();
+bool is_on_floor();
 
 /**
  * @brief Checks what floor the elevator is on.
@@ -78,8 +78,8 @@ bool isOnFloor();
  * @return the floor number where the elevator is.
  */
 
-int whichFloor();
-int checkStopButton();
+int which_floor();
+int check_stop_button();
  
 
  /**
@@ -88,13 +88,13 @@ int checkStopButton();
  * @return 1 when the elevator is on a floor.
  */
 
-int startElev();
+int start_elev();
 
-int openDoor();
+int open_door();
 
 
 
-void stateMachine();
+void state_machine();
 
 #endif
 
