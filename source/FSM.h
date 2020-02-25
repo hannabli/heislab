@@ -23,11 +23,8 @@
  */
 
 typedef enum state {
-
  STOPPED_BETWEEN_FLOORS,
-
  STOPPED_ON_FLOOR,
-
  MOVING,
 
 } state;
@@ -37,11 +34,8 @@ typedef enum state {
  * @brief The possible directions of the elevator. 
  */
 typedef enum current_direction {
-
  UP,
-
  DOWN,
-
  NO_DIR,
 
  } current_direction; 

@@ -154,7 +154,6 @@ int checkIfOrdersAboveSameDir(int floor) {
                 openDoor();
     
             }
-            
             return 1;
             }
  
@@ -167,37 +166,54 @@ int checkIfOrdersAboveSameDir(int floor) {
 
 
 
-//HER ER DET EN BUG MED CAB ORDERS
 int checkIfOrdersAboveOppDir(int floor) {
 
     for(int i = (floor+1); i<4; i++) {
-        if(ordersDown[i]) {
+        if(ordersDown[i] || cabOrders[i]) {
             hardware_command_movement(HARDWARE_MOVEMENT_UP);
             setState(MOVING);
             setDirection(UP);
 
     while(getState()==MOVING) {
-        setPassingFloor();  
-        getOrder();
-        if(checkStopButton()){
-            stateMachine();
-        }
-            
-        hardware_command_floor_indicator_on(current_floor);
-        if(ordersDown[whichFloor()] || ordersUp[whichFloor()]) {
 
-            setTimerBefore();
-            setState(STOPPED_ON_FLOOR);
-            checkIfOrderFinished();
-            hardware_command_floor_indicator_on(whichFloor());
-            while(!checkTimer()) {
-                hardware_command_movement(HARDWARE_MOVEMENT_STOP);
-                openDoor(); 
-            
-            }
-            return 1;
+        while(i!=current_floor) {
+
+            setPassingFloor();  
+            getOrder();
+            if(checkStopButton()){
+                stateMachine();
             }
                 
+            hardware_command_floor_indicator_on(current_floor);
+
+
+            if(cabOrders[current_floor] || ordersUp[current_floor]) {
+                setTimerBefore();
+                setState(STOPPED_ON_FLOOR);
+                checkIfOrderFinished();
+                hardware_command_floor_indicator_on(whichFloor());
+                while(!checkTimer()) {
+                    hardware_command_movement(HARDWARE_MOVEMENT_STOP);
+                    openDoor(); 
+                
+                }
+          
+                return 1;
+            }
+        }
+
+        setTimerBefore();
+        setState(STOPPED_ON_FLOOR);
+        checkIfOrderFinished();
+        hardware_command_floor_indicator_on(whichFloor());
+        while(!checkTimer()) {
+             hardware_command_movement(HARDWARE_MOVEMENT_STOP);
+            openDoor(); 
+            
+        }
+      
+        return 1;
+ 
         }
     }
  
@@ -237,7 +253,7 @@ int checkIfOrdersBelowSameDir(int floor) {
             openDoor();
             
  }
- 
+     
  return 1;
  }
  
@@ -246,6 +262,7 @@ int checkIfOrdersBelowSameDir(int floor) {
  }
  
  }
+ 
  return 0;
 }
 
@@ -254,19 +271,58 @@ int checkIfOrdersBelowSameDir(int floor) {
 
 int checkIfOrdersBelowOppDir(int floor) {
     for(int i = (floor-1); i>=0; i--) {
-        if((ordersUp[i])) {
+        if((ordersUp[i]) || cabOrders[i]) {
             hardware_command_movement(HARDWARE_MOVEMENT_DOWN);
             setState(MOVING);
             setDirection(DOWN);
 
         while(getState()==MOVING) {
-            setPassingFloor();
-            getOrder();
-            if(checkStopButton()){
-                    stateMachine();
+    
+            while(i!=whichFloor()) {
+
+                setPassingFloor();
+                getOrder();
+                if(checkStopButton()){
+                        stateMachine();
+                    }
+                hardware_command_floor_indicator_on(current_floor);
+
+                if(cabOrders[whichFloor()] || ordersDown[whichFloor()]) {
+                    setTimerBefore();
+                    setState(STOPPED_ON_FLOOR);
+                    checkIfOrderFinished();
+                    hardware_command_floor_indicator_on(whichFloor());
+                    
+                    while(!checkTimer()) {
+                        hardware_command_movement(HARDWARE_MOVEMENT_STOP);
+                
+                        openDoor();
+ 
+                    }
+              
+                return 1;
                 }
-            hardware_command_floor_indicator_on(current_floor);
-                if(ordersUp[whichFloor()] || cabOrders[whichFloor()] || ordersDown[whichFloor()]) {
+               
+            }
+
+            setTimerBefore();
+            setState(STOPPED_ON_FLOOR);
+            checkIfOrderFinished();
+            hardware_command_floor_indicator_on(whichFloor());
+                    
+            while(!checkTimer()) {
+                hardware_command_movement(HARDWARE_MOVEMENT_STOP);
+                openDoor();
+            }
+
+
+            return 1;
+
+            }
+
+
+
+                /*if(ordersUp[whichFloor()] || cabOrders[whichFloor()] || ordersDown[whichFloor()]) {
                     setTimerBefore();
                     setState(STOPPED_ON_FLOOR);
                     checkIfOrderFinished();
@@ -280,16 +336,13 @@ int checkIfOrdersBelowOppDir(int floor) {
  
             }
         return 1;
-        }
+        }*/
     }
-
+   
  }
- }
+  return 0;
+} 
  
- return 0;
-}
-
-
 
 
 void nextOrder(int floor) {
@@ -299,19 +352,39 @@ void nextOrder(int floor) {
         if(!checkIfOrdersAboveOppDir(floor)) {
             if(!checkIfOrdersBelowOppDir(floor)) {
                 checkIfOrdersBelowSameDir(floor);
+            }
+        }
+        }
     }
-    }
-    }
-    }
+
+    /*else if(getDirection()==DOWN && (cabOrders[current_floor+1] || ordersUp[current_floor+1] || ordersDown[current_floor+1])) {
+        int last_floor = current_floor;
+        while(current_floor!=last_floor+1) {
+            hardware_command_movement(UP);
+            setPassingFloor();
+            setState(MOVING);
+            setDirection(UP);
+            if(checkStopButton()) {
+                stateMachine();
+            }
+        }
+        hardware_command_movement(HARDWARE_MOVEMENT_STOP);
+        setState(STOPPED_ON_FLOOR);
+
+
+
+    }*/
+
+
     else if (getDirection()==DOWN) {
     
     if(!checkIfOrdersBelowSameDir(floor)) {
         if(!checkIfOrdersBelowOppDir(floor)) {
             if(!checkIfOrdersAboveOppDir(floor)) {
                 checkIfOrdersAboveSameDir(floor);
-    }
-    }
-    }
+            }
+            }
+        }
     }
     
     if(getDirection()==NO_DIR) {

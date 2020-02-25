@@ -71,7 +71,9 @@ int whichFloor(){
 
 
 int startElev() {
-
+    deleteAllOrders();
+    hardware_command_door_open(0);
+    hardware_command_stop_light(0);
     int readyToOrder = 0;
 
     while (!isOnFloor()) {
@@ -170,11 +172,13 @@ void stateMachine() {
         while(!hardware_read_stop_signal()) {
             
             getOrder();
-            nextOrder(current_floor);
+            nextOrder(whichFloor());
             checkStopButton();
         }
         }
         {
+
+
     case STOPPED_BETWEEN_FLOORS:
         prev_dir=getDirection();
         setDirection(NO_DIR);
@@ -193,12 +197,16 @@ void stateMachine() {
                     while(!hardware_read_floor_sensor(prev_floor)) {
                         hardware_command_movement(HARDWARE_MOVEMENT_DOWN);
                         setDirection(DOWN);
+                        if(checkStopButton()) {
+                            stateMachine();
+                        }
                     }
                     setTimerBefore();
                     
                     while(!checkTimer()) {
                         hardware_command_movement(HARDWARE_MOVEMENT_STOP);
                         checkIfOrderFinished();
+                        checkStopButton();
                         
                     }
            
@@ -212,6 +220,9 @@ void stateMachine() {
                     while(!hardware_read_floor_sensor(prev_floor)) {
                         hardware_command_movement(HARDWARE_MOVEMENT_UP);
                         setDirection(UP);
+                        if(checkStopButton()) {
+                            stateMachine();
+                        }
                     }
                 
                     setTimerBefore();
@@ -219,6 +230,7 @@ void stateMachine() {
                     while(!checkTimer()) {
                         hardware_command_movement(HARDWARE_MOVEMENT_STOP);
                         checkIfOrderFinished();
+                        checkStopButton();
                         
                     }
                     setState(STOPPED_ON_FLOOR);
