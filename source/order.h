@@ -14,21 +14,51 @@
 void print_array_down();
 void print_array_up();
 void print_array_inside();
+
+
+
+
 int order_exists();
 int check_if_orders_between(int floor, int endFloor);
 int order_exists_on_floor(int floor);
 /**
- * @brief Variable type int used in @c add_order and @c delete_order.
+ * @brief Variable type int which represents the floor the elevator is located on or was last located on.
  */
 
 int current_floor;
 
+/**
+* @brief Checks if there are any orders above that are of order type  up.
+*
+* @param floor The current floor of the elevator.
+*
+*/
+
 int check_if_orders_above_same_dir(int floor);
 
-
+/**
+* @brief Checks if there are any orders above that are of order type  down.
+*
+* @param floor The current floor of the elevator.
+*
+*/
 int check_if_orders_above_opp_dir(int floor);
 
+/**
+* @brief Checks if there are any orders below that are of order type  down.
+*
+* @param floor The current floor of the elevator.
+*
+*/
+
 int check_if_orders_below_same_dir(int floor);
+
+/**
+* @brief Checks if there are any orders below that are of order type  up.
+*
+* @param floor The current floor of the elevator.
+*
+*/
 
 int check_if_orders_below_opp_dir(int floor);
 /**
@@ -80,29 +110,6 @@ void delete_order();
 
 void delete_all_orders();
 
-
-
-/**
- * @brief Checks if there are any orders from the floors above.
- * The elevator moves up to the next floor if there are any orders there.
- *
- * @param floor The floor at which the elevator is located.
- *
- * @return 1 if there are any orders from above.
- */
-
-//int checkIfOrdersAbove(int floor);
-
-/**
- * @brief Checks if there are any orders from the floors below.
- * The elevator moves down to the next floor if there are any orders there.
- *
- * @param floor The floor at which the elevator is located.
- * 
- * @return 1 if there are any orders from below.
- *
- */
-//int checkIfOrdersBelow(int floor);
 
 
 /**
