@@ -17,7 +17,7 @@ void set_current_floor(int floor) {
 }
 
 void set_passing_floor() {
-    for(int i=0; i<4; i++) {
+    for(int i=0; i<HARDWARE_NUMBER_OF_FLOORS; i++) {
         if(hardware_read_floor_sensor(i)) {
             current_floor=i;
         }
@@ -42,7 +42,7 @@ void set_direction(current_direction dir){
 
 bool is_on_floor() {
 
-    for(int i=0; i<4; i++) {
+    for(int i=0; i<HARDWARE_NUMBER_OF_FLOORS; i++) {
 
     if(hardware_read_floor_sensor(i)) {
 
@@ -172,7 +172,7 @@ void state_machine() {
         while(!hardware_read_stop_signal()) {
             
             get_order();
-            next_order(which_floor());
+            next_order(current_floor);
             check_stop_button();
         }
         }

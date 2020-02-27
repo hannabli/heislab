@@ -11,15 +11,10 @@
 #include "hardware.h"
 #include "FSM.h"
 
-void print_array_down();
-void print_array_up();
-void print_array_inside();
-
-
 
 
 int order_exists();
-int check_if_orders_between(int floor, int endFloor);
+
 int order_exists_on_floor(int floor);
 /**
  * @brief Variable type int which represents the floor the elevator is located on or was last located on.

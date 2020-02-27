@@ -23,10 +23,10 @@ void set_timer_before();
  * @brief Gets the present time.
  *
  *
- * @return the present time as a clock_t variable.
+ * @return the present time as a time_t variable.
  */
 
-clock_t get_timer_before();
+time_t get_timer_before();
 
 /**
  * @brief Checks if 3 seconds have passed since the timer was set.

@@ -7,25 +7,9 @@ int orders_down[4]={0};
 int cab_orders[4]={0};
 
 
-void print_array_down(){
-    for(int i = 0; i<4; i++) {
-    printf("%d", orders_down[i]);
-    }
-}
-void print_array_up(){
-    for(int i = 0; i<4; i++) {
-    printf("%d", orders_up[i]);
-    }
-    }
-
-void print_array_inside() {
-    for(int i = 0; i<4; i++) {
-    printf("%d", cab_orders[i]);
-    }
-}
 
 void get_order(){
-    for(int f=0; f<4; f++){
+    for(int f=0; f<HARDWARE_NUMBER_OF_FLOORS; f++){
         if(hardware_read_order(f,HARDWARE_ORDER_DOWN)) {
             add_order(f,HARDWARE_ORDER_DOWN);
             hardware_command_order_light(f, HARDWARE_ORDER_DOWN, 1);
@@ -57,7 +41,7 @@ void add_order(int floor, HardwareOrder order_type){
 }
 
 int order_exists() {
-    for(int i= 0; i<4; i++) {
+    for(int i= 0; i<HARDWARE_NUMBER_OF_FLOORS; i++) {
         if(orders_down[i] || orders_up[i] || cab_orders[i]) {
             return 1;
     }
@@ -107,7 +91,7 @@ void delete_order(int floor, HardwareOrder order_type){
 
 void delete_all_orders(){
 
-    for(int i=0; i<4; i++) {
+    for(int i=0; i<HARDWARE_NUMBER_OF_FLOORS; i++) {
 
         cab_orders[i]=0;
         hardware_command_order_light(i, HARDWARE_ORDER_INSIDE, 0);
@@ -119,19 +103,9 @@ void delete_all_orders(){
 
 }
 
-int check_if_orders_between(int floor, int end_floor) {
-    for(int i = floor; i<end_floor; i++) {
-        if((orders_up[i]==1) || (orders_down[i]==1) || cab_orders[i]==1) {
-        return i;
-    }
-    }
- return end_floor;
-}
-
-
 
 int check_if_orders_above_same_dir(int floor) {
-    for(int i = (floor+1); i<4; i++) {
+    for(int i = (floor+1); i<HARDWARE_NUMBER_OF_FLOORS; i++) {
         if((orders_up[i]==1) || cab_orders[i]==1) {
             hardware_command_movement(HARDWARE_MOVEMENT_UP);
             set_state(MOVING);
@@ -168,7 +142,7 @@ int check_if_orders_above_same_dir(int floor) {
 
 int check_if_orders_above_opp_dir(int floor) {
 
-    for(int i = (floor+1); i<4; i++) {
+    for(int i = (floor+1); i<HARDWARE_NUMBER_OF_FLOORS; i++) {
         if(orders_down[i] || cab_orders[i]) {
             hardware_command_movement(HARDWARE_MOVEMENT_UP);
             set_state(MOVING);
@@ -320,23 +294,6 @@ int check_if_orders_below_opp_dir(int floor) {
 
             }
 
-
-
-                /*if(orders_up[which_floor()] || cab_orders[which_floor()] || orders_down[which_floor()]) {
-                    set_timer_before();
-                    set_state(STOPPED_ON_FLOOR);
-                    check_if_order_finished();
-                    hardware_command_floor_indicator_on(which_floor());
-                    
-        while(!check_timer()) {
-            hardware_command_movement(HARDWARE_MOVEMENT_STOP);
-    
-            open_door();
-
- 
-            }
-        return 1;
-        }*/
     }
    
  }
@@ -346,6 +303,12 @@ int check_if_orders_below_opp_dir(int floor) {
 
 
 void next_order(int floor) {
+
+    if(order_exists_on_floor(floor)) {
+        check_if_order_finished(floor);
+        open_door();
+    }
+
     if(get_direction()==UP){
     
     if(!check_if_orders_above_same_dir(floor)) {
@@ -357,25 +320,7 @@ void next_order(int floor) {
         }
     }
 
-    /*else if(get_direction()==DOWN && (cab_orders[current_floor+1] || orders_up[current_floor+1] || orders_down[current_floor+1])) {
-        int last_floor = current_floor;
-        while(current_floor!=last_floor+1) {
-            hardware_command_movement(UP);
-            set_passing_floor();
-            set_state(MOVING);
-            set_direction(UP);
-            if(check_stop_button()) {
-                state_machine();
-            }
-        }
-        hardware_command_movement(HARDWARE_MOVEMENT_STOP);
-        set_state(STOPPED_ON_FLOOR);
-
-
-
-    }*/
-
-
+   
     else if (get_direction()==DOWN) {
     
     if(!check_of_orders_below_same_dir(floor)) {

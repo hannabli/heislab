@@ -14,10 +14,9 @@ int main(){
     }
 
 
-
     start_elev();
 
-    printf("Hei! Git test");
+
 
    while(1) {
         state_machine();
@@ -25,3 +24,4 @@ int main(){
 
     return 0;
 }
+
