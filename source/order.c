@@ -22,7 +22,7 @@ void get_order(){
         add_order(f,HARDWARE_ORDER_INSIDE);
         hardware_command_order_light(f, HARDWARE_ORDER_INSIDE, 1);
         }
- }
+    }
 }
 
 
@@ -104,7 +104,7 @@ void delete_all_orders(){
 }
 
 
-int check_if_orders_above_same_dir(int floor) {
+int check_if_orders_above_up(int floor) {
     for(int i = (floor+1); i<HARDWARE_NUMBER_OF_FLOORS; i++) {
         if((orders_up[i]==1) || cab_orders[i]==1) {
             hardware_command_movement(HARDWARE_MOVEMENT_UP);
@@ -127,7 +127,7 @@ int check_if_orders_above_same_dir(int floor) {
                 
                     open_door();
     
-            }
+                    }
             return 1;
             }
  
@@ -140,7 +140,7 @@ int check_if_orders_above_same_dir(int floor) {
 
 
 
-int check_if_orders_above_opp_dir(int floor) {
+int check_if_orders_above_down(int floor) {
 
     for(int i = (floor+1); i<HARDWARE_NUMBER_OF_FLOORS; i++) {
         if(orders_down[i] || cab_orders[i]) {
@@ -201,7 +201,7 @@ int check_if_orders_above_opp_dir(int floor) {
 
 
 
-int check_of_orders_below_same_dir(int floor) {
+int check_of_orders_below_down(int floor) {
     for(int i = (floor-1); i>=0; i--) {
         if((orders_down[i]==1) || cab_orders[i]==1) {
             hardware_command_movement(HARDWARE_MOVEMENT_DOWN);
@@ -243,7 +243,7 @@ int check_of_orders_below_same_dir(int floor) {
 
 
 
-int check_if_orders_below_opp_dir(int floor) {
+int check_if_orders_below_up(int floor) {
     for(int i = (floor-1); i>=0; i--) {
         if((orders_up[i]) || cab_orders[i]) {
             hardware_command_movement(HARDWARE_MOVEMENT_DOWN);
@@ -311,10 +311,10 @@ void next_order(int floor) {
 
     if(get_direction()==UP){
     
-    if(!check_if_orders_above_same_dir(floor)) {
-        if(!check_if_orders_above_opp_dir(floor)) {
-            if(!check_if_orders_below_opp_dir(floor)) {
-                check_of_orders_below_same_dir(floor);
+    if(!check_if_orders_above_up(floor)) {
+        if(!check_if_orders_above_down(floor)) {
+            if(!check_if_orders_below_up(floor)) {
+                check_of_orders_below_down(floor);
             }
         }
         }
@@ -322,11 +322,11 @@ void next_order(int floor) {
 
    
     else if (get_direction()==DOWN) {
-    
-    if(!check_of_orders_below_same_dir(floor)) {
-        if(!check_if_orders_below_opp_dir(floor)) {
-            if(!check_if_orders_above_opp_dir(floor)) {
-                check_if_orders_above_same_dir(floor);
+
+    if(!check_of_orders_below_down(floor)) {
+        if(!check_if_orders_below_up(floor)) {
+            if(!check_if_orders_above_down(floor)) {
+                check_if_orders_above_up(floor);
             }
             }
         }
@@ -334,10 +334,10 @@ void next_order(int floor) {
     
     if(get_direction()==NO_DIR) {
     
-        check_if_orders_below_opp_dir(floor);
-        check_of_orders_below_same_dir(floor);
-        check_if_orders_above_same_dir(floor);
-        check_if_orders_above_opp_dir(floor);
+        check_if_orders_below_up(floor);
+        check_of_orders_below_down(floor);
+        check_if_orders_above_up(floor);
+        check_if_orders_above_down(floor);
         }
 }
 

@@ -5,11 +5,11 @@
 time_t before;
 
 void set_timer_before(){
- before = time(NULL);
+    before = time(NULL);
 }
 
 time_t get_timer_before(){
- return before;
+    return before;
 }
 
 bool check_timer(){
@@ -18,10 +18,10 @@ bool check_timer(){
     time_t now_t = time(NULL);
     int difference = now_t - get_timer_before();
     if (difference >= sec){
-    return 1;
+        return 1;
     }
     else{
-    return 0;
+        return 0;
     }
 }
 

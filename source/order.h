@@ -29,7 +29,7 @@ int current_floor;
 *
 */
 
-int check_if_orders_above_same_dir(int floor);
+int check_if_orders_above_up(int floor);
 
 /**
 * @brief Checks if there are any orders above that are of order type  down.
@@ -37,7 +37,7 @@ int check_if_orders_above_same_dir(int floor);
 * @param floor The current floor of the elevator.
 *
 */
-int check_if_orders_above_opp_dir(int floor);
+int check_if_orders_above_down(int floor);
 
 /**
 * @brief Checks if there are any orders below that are of order type  down.
@@ -46,7 +46,7 @@ int check_if_orders_above_opp_dir(int floor);
 *
 */
 
-int check_if_orders_below_same_dir(int floor);
+int check_if_orders_below_down(int floor);
 
 /**
 * @brief Checks if there are any orders below that are of order type  up.
@@ -55,7 +55,7 @@ int check_if_orders_below_same_dir(int floor);
 *
 */
 
-int check_if_orders_below_opp_dir(int floor);
+int check_if_orders_below_up(int floor);
 /**
  * @brief Checks if there is an order of a certain order type to a certain floor.
  *
