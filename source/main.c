@@ -13,10 +13,9 @@ int main(){
         exit(1);
     }
 
-
     start_elev();
 
-
+    
 
    while(1) {
         state_machine();

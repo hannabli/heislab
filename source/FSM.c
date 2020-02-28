@@ -188,8 +188,7 @@ void state_machine() {
         prev_dir=get_direction();
         set_direction(NO_DIR);
         prev_floor=current_floor;
-
-     
+        
         while(!hardware_read_stop_signal()) {
         
             while(!order_exists()) {
@@ -198,12 +197,14 @@ void state_machine() {
 
             //Sjekker om det kommer bestilling til etasjen heisen har passert sist
             if(prev_dir==UP) {
+                
                 if(order_exists_on_floor(prev_floor)) {
 
                     while(!hardware_read_floor_sensor(prev_floor)) {
 
                         hardware_command_movement(HARDWARE_MOVEMENT_DOWN);
-                        set_direction(DOWN);
+                       
+                        set_state(MOVING);
                         if(check_stop_button()) {
                             state_machine();
                         }
@@ -224,13 +225,16 @@ void state_machine() {
 
 
             if(prev_dir==DOWN) {
+              
                 if(order_exists_on_floor(prev_floor)) {
 
                     while(!hardware_read_floor_sensor(prev_floor)) {
 
                         hardware_command_movement(HARDWARE_MOVEMENT_UP);
-                        set_direction(UP);
+                      
+                        set_state(MOVING);
                         if(check_stop_button()) {
+
                             state_machine();
                         }
                     }
@@ -248,8 +252,6 @@ void state_machine() {
                 }
             }
 
-
-
            next_order(current_floor);
         
         }
@@ -257,10 +259,6 @@ void state_machine() {
     }
     }
 }
-
-
-
-
 
 
 

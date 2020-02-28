@@ -13,7 +13,27 @@
 
 
 
+
+/**
+* @brief Checks if there are any orders. 
+*
+* @return 1 if an order exists.
+*/
+
+
 int order_exists();
+
+
+
+/**
+* @brief Checks if there are any orders on a specific floor. 
+*
+* @param floor The floor we wish to check.
+*
+* @return 1 if an order exists on the floor. 
+*
+*/
+
 
 int order_exists_on_floor(int floor);
 /**
@@ -108,7 +128,7 @@ void delete_all_orders();
 
 
 /**
- * @brief Calls @c check_if_orders_up or @c check_if_orders_down, depending on which direction the elevator is moving.
+ * @brief Calls @c check_if_orders_above_up, @c check_if_orders_above_down, @c check_if_orders_below_up or @c check_if_orders_below_down depending on which direction the elevator is moving.
  *
  * @param floor The floor at which the elevator is located.
  * 

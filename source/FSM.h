@@ -146,6 +146,7 @@ int start_elev();
 
 int open_door();
 
+
 /**
 * @brief The finite state machine of the elevator.
 * Handles what the elevator does next depending on what state it is in. 
