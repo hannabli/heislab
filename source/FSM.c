@@ -125,6 +125,7 @@ int check_stop_button() {
 
 
 int open_door() {
+    if(is_on_floor()) {
     int opened = 1;
     while(hardware_read_obstruction_signal()) {
         hardware_command_door_open(1);
@@ -144,6 +145,7 @@ int open_door() {
     hardware_command_door_open(0);
     opened = 0;
     return opened;
+ }
 }
 
 

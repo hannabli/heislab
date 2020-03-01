@@ -234,17 +234,17 @@ int check_if_orders_below_down(int floor) {
                 current_floor = which_floor();
             }
             if((orders_down[current_floor] || cab_orders[current_floor]) && is_on_floor() && order_exists_on_floor(current_floor)) {
-            set_timer_before();
-    
-            set_state(STOPPED_ON_FLOOR);
-            check_if_order_finished();
-            hardware_command_floor_indicator_on(which_floor());
-            while(!check_timer()) {
-            hardware_command_movement(HARDWARE_MOVEMENT_STOP);
-            
-            open_door();
-            
-            }
+                set_timer_before();
+        
+                set_state(STOPPED_ON_FLOOR);
+                check_if_order_finished();
+                hardware_command_floor_indicator_on(which_floor());
+                while(!check_timer()) {
+                    hardware_command_movement(HARDWARE_MOVEMENT_STOP);
+                    
+                    open_door();
+                
+                }
      
             return 1;
             }
